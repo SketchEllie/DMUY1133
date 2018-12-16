@@ -1,3 +1,4 @@
+//Establish Variables
 var lightOn = true;
 var radWin = false;
 var TVtouch = false;
@@ -14,6 +15,8 @@ var colorSelect = 0;
 var poster = 1;
 var painting = 1;
 
+
+//Preload for all visual and audio assets
 function preload(){
 	charleston = loadSound("assets/Charleston.mp3");
 	jazzy = loadSound("assets/Jazzy.mp3");
@@ -47,6 +50,8 @@ function setup() {
 	
 
 }
+
+//Draw function for the layout of the room and constant updates as new data comes in
 function draw() {
 	if(lightOn == true){
 		image(bg1,0,0,1280,720);
@@ -61,7 +66,7 @@ function draw() {
 	buttons();
 }
 
-
+//Function used to detect when information comes in from the arduino and what to do with that data
 function serialEvent(){
 	inData = Number(serial.read());
 	if(inData == 52){
@@ -103,10 +108,12 @@ function serialEvent(){
 
 }
 
+//See errors with Arudino Board if any
 function serialError(err){
 	console.log("Something went wrong with the serial port." + err);
 }
 
+//Takes data from Arduino and changes the radio accordingly
 function radioPlay(){
 	if(radioChannel ==0){
 		playingChannel.stop()
@@ -129,7 +136,7 @@ function radioPlay(){
 	}
 }
 
-
+//Room Color Buttons
 function buttons(){
 	push();
 	ellipseMode(CENTER);
@@ -145,6 +152,7 @@ function buttons(){
 	pop();
 }
 
+//mouseClicked to change wall art based on location/dimensions
 function mouseClicked(){
 	if(dist(mouseX,mouseY,20,20)<10){
 		shadeOverlay = [255,60,60,25];
@@ -170,6 +178,8 @@ function mouseClicked(){
 	}
 }
 
+
+//Takes in data from arduino and displays an animation of the tv when data is true and goes away when it's false
 function TVmode(){
 	if(TVtouch == true){
 		if(frameCount % 60 <= 15 ){
@@ -195,6 +205,8 @@ function TVmode(){
 	}
 }
 
+//Takes in information from the arduino to change the room in the p5 sketch
+// and sends data back into arduino to turn on and off LED
 function lightSwitch(){
 	if(lightOn == true){
 		lightOn = false;
@@ -206,13 +218,15 @@ function lightSwitch(){
 	}
 }
 
-
+//Creates the abckgroun with the color shaders
 function backgroundColor(){
 	console.log("backgroundcolor running");
 	fill(shadeOverlay);
 	rect(0,0,1280,720);
 }
 
+
+//Function that cycles through wall art based on variable value
 function wallart(){
 	if(poster == 1){
 		image(poster1,187,148,200,280);
